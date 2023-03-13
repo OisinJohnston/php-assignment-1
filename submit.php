@@ -11,8 +11,6 @@
 			return $data;
 		}
 
-		print_r($_POST);
-		// Check all fields have values
 		$fields = ['firstname', 'surname', 'email', 'password', 'addr1', 'addr2', 'eircode', 'gender'];
 		$values = array();
 
@@ -35,10 +33,9 @@
 			echo "Failed to connect to database: ".mysqli_connect_error()."<br/>";
 			exit();
 		} else {
-			echo "Connected Successfully";
+			echo "Connected Successfully <br/>";
 		}
 		$sql = "
-			DROP TABLE details;
 			CREATE TABLE IF NOT EXISTS details (
 				id INT AUTO_INCREMENT PRIMARY KEY,
 				firstname CHAR(50),
@@ -54,17 +51,21 @@
 		if (mysqli_query($conn, $sql)) {
 			echo "Created table successfully <br/>";
 		} else {
-			echo "Failed to create the table <br/>";
+			echo "Failed to create the table <br/>". mysqli_error($conn);
+
 		}
 
-		$sql = "INSERT INTO TABLE details (firstname, lastname, gender, password, address_1, address_2, eircode) VALUES(".$values['firstname'].", ".$values['surname'].", ".$values['gender'].", ".$values['password'].", ".$values['addr1'].", ".$values['addr2'].", ".$values['eircode'].")";
+		$sql = "INSERT INTO details(firstname, lastname, gender, password, address_1, address_2, eircode) VALUES('".$values['firstname']."', '".$values['surname']."', '".$values['gender'] ."', '".$values['password']."', '".$values['addr1']."', '".$values['addr2']."', '".$values['eircode']."')";
 
 		if (mysqli_query($conn,$sql)){ 
 			echo "Inserted Data Successfully <br/>";
 		} else {
-				echo "Failed to insert data<br/>";
+			echo "Failed to insert data<br/>". mysqli_error($conn);
 		}
 		mysqli_close($conn);
- 		?>
+		?>
+		<a href="./users.php"><button>User List</button></a>
+
 	</body>
+
 </html>

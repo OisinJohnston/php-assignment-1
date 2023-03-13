@@ -30,7 +30,8 @@
 				
 				document.getElementById('userform').addEventListener('formdata', (e) => {
 					var formData = e.formData;
-					form.set('gender', document.querySelector('input[name="gender"]:checked').id)
+					formData.delete('gender');	
+					formData.set('gender', document.querySelector('input[name="gender"]:checked').id);
 				});
 
 				return true
