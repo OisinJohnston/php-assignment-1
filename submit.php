@@ -3,11 +3,11 @@
 	<head></head>
 	<body>
 		<?php
-		function validate_input($data) {
+		function validate_input($data, $conn) {
 			$data = trim($data); // Remove unnecessary whitespace
 			$data = stripslashes($data); // Remove unnec
 			$data = htmlspecialchars($data); // convert special characters to html
-
+			$data = mysqli_real_escape_string($conn, $data);
 			return $data;
 		}
 
@@ -15,14 +15,6 @@
 		$values = array();
 
 
-		foreach($fields as &$field) {
-			if(!empty($_POST[$field])) {
-				$values[$field]=validate_input($_POST[$field]);
-			} else {
-				echo "Didn't find symbol $field ";
-				exit();
-			}
-		}
 		$host = "localhost";
 		$username = "OJ";
 		$password = "password";
@@ -55,9 +47,20 @@
 
 		}
 
-		$sql = "INSERT INTO details(firstname, lastname, gender, password, address_1, address_2, eircode) VALUES('".$values['firstname']."', '".$values['surname']."', '".$values['gender'] ."', '".$values['password']."', '".$values['addr1']."', '".$values['addr2']."', '".$values['eircode']."')";
+		foreach($fields as &$field) {
+			if(!empty($_POST[$field])) {
+				$values[$field]=validate_input($_POST[$field], $conn);
+			} else {
+				echo "Didn't find symbol $field ";
+				exit();
+			}
+		}
 
-		if (mysqli_query($conn,$sql)){ 
+		$sql = "INSERT INTO details(firstname, lastname, gender, email, password, address_1, address_2, eircode) VALUES('".$values['firstname']."', '".$values['surname']."', '".$values['gender'] ."', '".$values['email']."','".$values['password']."', '".$values['addr1']."', '".$values['addr2']."', '".$values['eircode']."')";
+			
+		echo $sql;
+
+		if (mysqli_multi_query($conn,$sql)){ 
 			echo "Inserted Data Successfully <br/>";
 		} else {
 			echo "Failed to insert data<br/>". mysqli_error($conn);

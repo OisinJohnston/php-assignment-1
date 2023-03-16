@@ -2,9 +2,26 @@
 
 <html>
 	<head>
+		<style>
+			table, td, th {
+				border: solid;
+				
+			}
+		</style>
 	</head>
 	<body>
 		<table>
+			<tr>
+				<th>id</th>
+				<th>firstname</th>
+				<th>lastname</th>
+				<th>gender</th>
+				<th>email</th>
+				<th>password</th>
+				<th>address 1</th>
+				<th>address 2</th>
+				<th>eircode</th>
+			</tr>
 			<?php
 				$host = "localhost";
 				$username = "OJ";
@@ -15,14 +32,16 @@
 				if (mysqli_connect_errno()) {
 					echo "Failed to connect to database: ".mysqli_connect_error()."<br/>";
 					exit();
-				} else {
-					echo "Connected Successfully <br/>";
 				}
-				$sql = "SELECT * FROM details;";
+				$sql = "SELECT * FROM details;";				
 				$result = mysqli_query($conn,$sql);
-				print_r($result);
 				while ($row = mysqli_fetch_row($result)) {
 					echo "<tr>";
+					foreach ($row as $value) {
+						echo "<td>".$value."</td>";
+					}
+					
+					echo "</tr>";
 				}
 				mysqli_close($conn);
 			?>
