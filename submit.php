@@ -28,6 +28,7 @@
 			echo "Connected Successfully <br/>";
 		}
 		$sql = "
+			DROP TABLE details;
 			CREATE TABLE IF NOT EXISTS details (
 				id INT AUTO_INCREMENT PRIMARY KEY,
 				firstname CHAR(50),
